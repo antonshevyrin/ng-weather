@@ -13,10 +13,11 @@ export class CurrentConditionsComponent {
     private weatherService: WeatherService,
     private locationService: LocationService,
     private router: Router
-  ) {}
+  ) {
+  }
 
-  getCurrentConditions() {
-    return this.weatherService.getCurrentConditions();
+  getCurrentConditions$() {
+    return this.weatherService.getCurrentConditions$();
   }
 
   showForecast(zipcode: string) {
