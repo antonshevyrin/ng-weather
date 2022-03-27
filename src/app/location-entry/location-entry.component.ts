@@ -4,16 +4,18 @@ import { filter, first } from 'rxjs';
 import { ObservingButtonComponent } from '../observing-button/observing-button.component';
 
 @Component({
-  selector: 'app-zipcode-entry',
-  templateUrl: './zipcode-entry.component.html'
+  selector: 'app-location-entry',
+  templateUrl: './location-entry.component.html',
+  styleUrls: ['./location-entry.component.css']
 })
-export class ZipcodeEntryComponent {
-  constructor(private service: LocationService) {}
+export class LocationEntryComponent {
+  constructor(private service: LocationService) {
+  }
 
-  addLocation(button: ObservingButtonComponent, zipcode: string) {
-    if (!!zipcode) {
+  addLocation(button: ObservingButtonComponent, location: string) {
+    if (!!location) {
       const firstLoadedWeatherConditions$ = this.service
-        .addLocation(zipcode)
+        .addLocation(location)
         .pipe(
           filter((value) => value.data),
           first()

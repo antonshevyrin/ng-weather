@@ -19,18 +19,18 @@ export class LocationService {
     }
   }
 
-  addLocation(zipcode: string): Observable<WeatherConditions> {
-    this.locations.push(zipcode);
+  addLocation(location: string): Observable<WeatherConditions> {
+    this.locations.push(location);
     localStorage.setItem(LOCATIONS, JSON.stringify(this.locations));
-    return this.weatherService.addCurrentConditions(zipcode);
+    return this.weatherService.addCurrentConditions(location);
   }
 
-  removeLocation(zipcode: string) {
-    const index = this.locations.indexOf(zipcode);
+  removeLocation(location: string) {
+    const index = this.locations.indexOf(location);
     if (index !== -1) {
       this.locations.splice(index, 1);
       localStorage.setItem(LOCATIONS, JSON.stringify(this.locations));
-      this.weatherService.removeCurrentConditions(zipcode);
+      this.weatherService.removeCurrentConditions(location);
     }
   }
 }

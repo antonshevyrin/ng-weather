@@ -45,8 +45,12 @@ export class ObservingButtonComponent implements OnDestroy {
     this.subscription$ = concat(
       doneStateOnCompletion$,
       readyStateAfterPostCompletionReadyDelay$
-    ).subscribe((newState) => {
-      this.state = newState;
+    ).subscribe({
+      next: (newState) => {
+        this.state = newState;
+      }, error: () => {
+        this.state = ButtonState.Ready;
+      }
     });
   }
 }

@@ -10,16 +10,21 @@ import { Router } from '@angular/router';
 })
 export class CurrentConditionsComponent {
   constructor(
-    private weatherService: WeatherService,
-    private locationService: LocationService,
+    public weatherService: WeatherService,
+    public locationService: LocationService,
     private router: Router
-  ) {}
+  ) {
+  }
 
   getCurrentConditions$() {
     return this.weatherService.getCurrentConditions$();
   }
 
-  showForecast(zipcode: string) {
-    this.router.navigate(['/forecast', zipcode]);
+  showForecast(location: string) {
+    this.router.navigate(this.getForecastCommand(location));
+  }
+
+  getForecastCommand(location: string): any[] {
+    return ['/forecast', location];
   }
 }

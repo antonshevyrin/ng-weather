@@ -4,7 +4,6 @@ import {
   delay,
   map,
   Observable,
-  retry,
   retryWhen,
   switchMap,
   take,
@@ -21,23 +20,24 @@ export class WeatherService {
     'https://raw.githubusercontent.com/udacity/Sunshine-Version-2/sunshine_master/app/src/main/res/drawable-hdpi/';
   private currentConditions$: BehaviorSubject<WeatherConditions>[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
-  addCurrentConditions(zipcode: string): Observable<WeatherConditions> {
+  addCurrentConditions(location: string): Observable<WeatherConditions> {
     const retryAttempts = 3;
     const retryDelay = 1000;
     const observable$: Observable<WeatherConditions> = timer(1, 30000).pipe(
       switchMap(() =>
         this.http.get(
-          `${WeatherService.URL}/weather?zip=${zipcode},us&units=imperial&APPID=${WeatherService.APPID}`
+          `${WeatherService.URL}/weather?zip=${location}&units=imperial&APPID=${WeatherService.APPID}`
         )
       ),
-      map((data) => ({ zip: zipcode, data })),
+      map((data) => ({ location, data })),
       retryWhen((errors) => errors.pipe(delay(retryDelay), take(retryAttempts)))
     );
 
     const subject$ = new BehaviorSubject<WeatherConditions>({
-      zip: zipcode,
+      location,
       data: null
     });
     observable$.subscribe(subject$);
@@ -45,9 +45,9 @@ export class WeatherService {
     return subject$.asObservable();
   }
 
-  removeCurrentConditions(zipcode: string) {
+  removeCurrentConditions(location: string) {
     for (const i in this.currentConditions$) {
-      if (this.currentConditions$[i].value.zip === zipcode) {
+      if (this.currentConditions$[i].value.location === location) {
         const subject = this.currentConditions$[i];
         subject.complete();
         this.currentConditions$.splice(+i, 1);
@@ -59,10 +59,10 @@ export class WeatherService {
     return this.currentConditions$.map((location) => location.asObservable());
   }
 
-  getForecast(zipcode: string): Observable<any> {
+  getForecast(location: string): Observable<any> {
     // Here we make a request to get the forecast data from the API. Note the use of backticks and an expression to insert the zipcode
     return this.http.get(
-      `${WeatherService.URL}/forecast/daily?zip=${zipcode},us&units=imperial&cnt=5&APPID=${WeatherService.APPID}`
+      `${WeatherService.URL}/forecast/daily?zip=${location}&units=imperial&cnt=5&APPID=${WeatherService.APPID}`
     );
   }
 

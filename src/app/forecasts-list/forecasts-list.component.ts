@@ -8,14 +8,14 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./forecasts-list.component.css']
 })
 export class ForecastsListComponent {
-  zipcode: string;
+  location: string;
   forecast: any;
 
-  constructor(private weatherService: WeatherService, route: ActivatedRoute) {
+  constructor(public weatherService: WeatherService, route: ActivatedRoute) {
     route.params.subscribe((params) => {
-      this.zipcode = params['zipcode'];
+      this.location = params['location'];
       weatherService
-        .getForecast(this.zipcode)
+        .getForecast(this.location)
         .subscribe((data) => (this.forecast = data));
     });
   }

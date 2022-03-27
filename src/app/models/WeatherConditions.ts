@@ -1,4 +1,4 @@
 export interface WeatherConditions {
-  zip: string;
+  location: string;
   data: any; // TODO: replace with interface (see https://openweathermap.org/current)
 }

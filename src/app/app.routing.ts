@@ -10,7 +10,7 @@ const appRoutes: Routes = [
     component: MainPageComponent
   },
   {
-    path: 'forecast/:zipcode',
+    path: 'forecast/:location',
     component: ForecastsListComponent
   }
 ];
