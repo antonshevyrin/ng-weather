@@ -1,5 +1,15 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable, retry, switchMap, timer } from 'rxjs';
+import {
+  BehaviorSubject,
+  delay,
+  map,
+  Observable,
+  retry,
+  retryWhen,
+  switchMap,
+  take,
+  timer
+} from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { WeatherConditions } from './models/WeatherConditions';
 
@@ -11,21 +21,28 @@ export class WeatherService {
     'https://raw.githubusercontent.com/udacity/Sunshine-Version-2/sunshine_master/app/src/main/res/drawable-hdpi/';
   private currentConditions$: BehaviorSubject<WeatherConditions>[] = [];
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
-  addCurrentConditions(zipcode: string): void {
+  addCurrentConditions(zipcode: string): Observable<WeatherConditions> {
+    const retryAttempts = 3;
+    const retryDelay = 1000;
     const observable$: Observable<WeatherConditions> = timer(1, 30000).pipe(
-      switchMap(() => this.http.get(
-        `${WeatherService.URL}/weather?zip=${zipcode},us&units=imperial&APPID=${WeatherService.APPID}`
-      )),
-      map(data => ({ zip: zipcode, data })),
-      retry()
+      switchMap(() =>
+        this.http.get(
+          `${WeatherService.URL}/weather?zip=${zipcode},us&units=imperial&APPID=${WeatherService.APPID}`
+        )
+      ),
+      map((data) => ({ zip: zipcode, data })),
+      retryWhen((errors) => errors.pipe(delay(retryDelay), take(retryAttempts)))
     );
 
-    const subject$ = new BehaviorSubject<WeatherConditions>({ zip: zipcode, data: null });
+    const subject$ = new BehaviorSubject<WeatherConditions>({
+      zip: zipcode,
+      data: null
+    });
     observable$.subscribe(subject$);
     this.currentConditions$.push(subject$);
+    return subject$.asObservable();
   }
 
   removeCurrentConditions(zipcode: string) {
@@ -39,7 +56,7 @@ export class WeatherService {
   }
 
   getCurrentConditions$(): Observable<WeatherConditions>[] {
-    return this.currentConditions$.map(location => location.asObservable());
+    return this.currentConditions$.map((location) => location.asObservable());
   }
 
   getForecast(zipcode: string): Observable<any> {
