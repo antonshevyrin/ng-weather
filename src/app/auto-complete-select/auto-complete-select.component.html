@@ -1,0 +1,22 @@
+<div class="auto-complete-select">
+  <input
+    #nameInput
+    type="text"
+    [placeholder]="placeholder"
+    (input)="onNameInput()"
+    class="form-control auto-complete-select--input"
+    [(ngModel)]="name"
+  />
+
+  <div
+    class="auto-complete-select--suggested-options-list list-group"
+    *ngIf="isTooltipVisible$ | async"
+  >
+    <div
+      *ngFor="let option of suggestedOptions"
+      class="auto-complete-select--suggested-options-list--suggested-option list-group-item"
+      (click)="onOptionClick(option)"
+      [innerHTML]="option.name | matchingTextHighlight: name"
+    ></div>
+  </div>
+</div>

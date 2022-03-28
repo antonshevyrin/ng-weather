@@ -15,6 +15,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { ObservingButtonComponent } from './observing-button/observing-button.component';
+import { AutoCompleteSelectComponent } from './auto-complete-select/auto-complete-select.component';
+import { MatchingTextHighlightPipe } from './auto-complete-select/matching-text-highlight.pipe';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import { ObservingButtonComponent } from './observing-button/observing-button.co
     ForecastsListComponent,
     CurrentConditionsComponent,
     MainPageComponent,
-    ObservingButtonComponent
+    ObservingButtonComponent,
+    AutoCompleteSelectComponent,
+    MatchingTextHighlightPipe
   ],
   imports: [
     BrowserModule,

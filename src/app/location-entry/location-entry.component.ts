@@ -2,15 +2,17 @@ import { Component } from '@angular/core';
 import { LocationService } from '../location.service';
 import { filter, first } from 'rxjs';
 import { ObservingButtonComponent } from '../observing-button/observing-button.component';
+import { CountryList } from '../models/CountryList';
 
 @Component({
   selector: 'app-location-entry',
   templateUrl: './location-entry.component.html',
-  styleUrls: ['./location-entry.component.css']
+  styleUrls: ['./location-entry.component.scss']
 })
 export class LocationEntryComponent {
-  constructor(private service: LocationService) {
-  }
+  CountryList = CountryList;
+
+  constructor(private service: LocationService) {}
 
   addLocation(button: ObservingButtonComponent, location: string) {
     if (!!location) {

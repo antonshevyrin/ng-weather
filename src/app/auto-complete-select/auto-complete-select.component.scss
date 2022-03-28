@@ -1,0 +1,16 @@
+:host {
+  position: relative;
+}
+
+.auto-complete-select {
+  &--suggested-options-list {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    z-index: 9999;
+
+    &--suggested-option {
+      cursor: pointer;
+    }
+  }
+}

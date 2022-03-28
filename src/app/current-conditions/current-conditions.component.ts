@@ -13,8 +13,7 @@ export class CurrentConditionsComponent {
     public weatherService: WeatherService,
     public locationService: LocationService,
     private router: Router
-  ) {
-  }
+  ) {}
 
   getCurrentConditions$() {
     return this.weatherService.getCurrentConditions$();

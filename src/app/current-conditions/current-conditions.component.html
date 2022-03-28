@@ -1,9 +1,16 @@
-<ng-container *ngFor='let weatherConditions$ of getCurrentConditions$()'>
-  <div *ngIf='weatherConditions$ | async as weatherConditions' class='well flex'>
-    <ng-container *ngIf='weatherConditions.data; else loadingMessage'>
-      <div (click)='showForecast(weatherConditions.location)'>
-        <h3>{{ weatherConditions.data.name }} ({{ weatherConditions.location }})</h3>
-        <h4>Current conditions: {{ weatherConditions.data.weather[0].main }}</h4>
+<ng-container *ngFor="let weatherConditions$ of getCurrentConditions$()">
+  <div
+    *ngIf="weatherConditions$ | async as weatherConditions"
+    class="well flex"
+  >
+    <ng-container *ngIf="weatherConditions.data; else loadingMessage">
+      <div (click)="showForecast(weatherConditions.location)">
+        <h3>
+          {{ weatherConditions.data.name }} ({{ weatherConditions.location }})
+        </h3>
+        <h4>
+          Current conditions: {{ weatherConditions.data.weather[0].main }}
+        </h4>
         <h4>Temperatures today:</h4>
         <p>
           Current {{ weatherConditions.data.main.temp | number: '.0-0' }} - Max
@@ -11,19 +18,22 @@
           {{ weatherConditions.data.main.temp_min | number: '.0-0' }}
         </p>
         <p>
-          <a [routerLink]='getForecastCommand(weatherConditions.location)'
-          >Show 5-day forecast for {{ weatherConditions.data.name }}</a
+          <a [routerLink]="getForecastCommand(weatherConditions.location)"
+            >Show 5-day forecast for {{ weatherConditions.data.name }}</a
           >
         </p>
       </div>
       <div>
         <span
-          class='close'
-          (click)='locationService.removeLocation(weatherConditions.location)'
-        >&times;</span
+          class="close"
+          (click)="locationService.removeLocation(weatherConditions.location)"
+          >&times;</span
         >
-        <img alt='weather conditions icon'
-             [src]='weatherService.getWeatherIcon(weatherConditions.data.weather[0].id)'
+        <img
+          alt="weather conditions icon"
+          [src]="
+            weatherService.getWeatherIcon(weatherConditions.data.weather[0].id)
+          "
         />
       </div>
     </ng-container>

@@ -20,8 +20,7 @@ export class WeatherService {
     'https://raw.githubusercontent.com/udacity/Sunshine-Version-2/sunshine_master/app/src/main/res/drawable-hdpi/';
   private currentConditions$: BehaviorSubject<WeatherConditions>[] = [];
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   addCurrentConditions(location: string): Observable<WeatherConditions> {
     const retryAttempts = 3;

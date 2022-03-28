@@ -48,7 +48,8 @@ export class ObservingButtonComponent implements OnDestroy {
     ).subscribe({
       next: (newState) => {
         this.state = newState;
-      }, error: () => {
+      },
+      error: () => {
         this.state = ButtonState.Ready;
       }
     });
